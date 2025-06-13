@@ -2,6 +2,9 @@
 namespace Neubox\API;
 
 class ApiRequest {
+	private $url;
+	private $headers;
+	private $postfields;
 	function __construct() {
 		global $env;
 		$this->url = $env['API_HOST'];
@@ -13,17 +16,21 @@ class ApiRequest {
 			'User-Agent: ' . $env['API_USER_AGENT'],
 			'neubox-user-email: ' . base64_encode($env['NEUBOX_USER_EMAIL']),
 		];
-		$this->postfields = json_encode([
+		$this->postfields = [
 			'email' => base64_encode($env['NEUBOX_USER_EMAIL'])
-		]);
+		];
 	}
 
-	public function Call($action = 'getdomains', $additional_fields = NULL) {
+	public function Call($action = 'getdomains', $additionalPostData = NULL) {
 		$url = $this->url . $action;
+		$pd = $this->postfields;
+		if($additionalPostData && is_array($additionalPostData)) {
+			$pd = array_merge($pd, $additionalPostData);
+		}
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->postfields);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($pd));
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
