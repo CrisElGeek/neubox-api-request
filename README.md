@@ -61,7 +61,7 @@ Realiza la petición tipo `POST` a la URL `http://<tu-dominio>/?q=neubox-api-tes
 
 ```json
 {
-	'domain': 'quieroestedominio.com',
-	'tlds': ['mx','com.mx','org']
+	domain: "quieroestedominio.com",
+	tlds: ["mx","com.mx","org"]
 }
 ``` 

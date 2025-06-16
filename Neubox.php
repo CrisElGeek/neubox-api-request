@@ -74,7 +74,9 @@
 						try {
 							$req->getDomains();
 						} catch(\Exception $e) {
+							return false;
 						}
+						return true;
 
         }
 
