@@ -1,4 +1,6 @@
 <?php
+namespace Neubox\Component;
+
 use Neubox\API\ApiRequest;
 
 class NeuboxPetitions extends ApiRequest {
@@ -8,23 +10,17 @@ class NeuboxPetitions extends ApiRequest {
 	}
 	
 	public function getDomains() {
-		try {
-			$response = $this->req->Call('getdomains');
-		} catch(\Exception $e) {
-			die($e->getMessage());
-		}
-		header('Content-Type: application/json');
+		$response = $this->req->Call('getdomains');
 		return $response;
 	}
 	
 	public function searchDomains(Array $postData) {
-		try {
+		if($postData['domain'] && is_array($postData['tlds']) && count($postData['tlds']) > 0) {
 			$response = $this->req->Call('searchdomains', $postData);
-		} catch(\Exception $e) {
-			die($e->getMessage());
+			return $response;
+		} else {
+			throw new \Exception('Missing data', 400);
 		}
-		header('Content-Type: application/json');
-		echo $response;
 	}
 }
 ?>
