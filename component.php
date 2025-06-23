@@ -7,8 +7,8 @@ require __DIR__ . '/libs/api_call.php';
 
 class NeuboxPetitions extends ApiRequest {
 	private $req;
-	function __construct() {
-		$this->req = new ApiRequest();
+	function __construct($data = []) {
+		$this->req = new ApiRequest($data);
 	}
 	
 	public function getDomains() {
