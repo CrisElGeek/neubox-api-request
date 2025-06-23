@@ -3,6 +3,8 @@ namespace Neubox\Component;
 
 use Neubox\API\ApiRequest;
 
+require __DIR__ . '/libs/api_call.php';
+
 class NeuboxPetitions extends ApiRequest {
 	private $req;
 	function __construct() {
