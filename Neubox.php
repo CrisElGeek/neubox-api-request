@@ -100,7 +100,9 @@ require __DIR__ . '/component.php';
 						$this->error = "An error has occured trying to connect to Neubox API, try again later."; # or $this->lang["error-message-variable"];
 						return false;
 					}
-					return true;
+					return [
+						'message' => 'connection test succeded!'
+					];
 
         }
 

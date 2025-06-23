@@ -45,6 +45,7 @@ class ApiRequest {
 			throw new \Exception($error_msg);
 		}
 		curl_close($ch);
+		moduleDebug($response);
 		return $response;
 	}
 }
