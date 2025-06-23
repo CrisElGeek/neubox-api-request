@@ -1,7 +1,7 @@
 <?php
-	use Neubox\Component\NeuboxPetitions;
+use Neubox\Component\NeuboxPetitions;
 
-	require __DIR__ . '/component.php';
+require __DIR__ . '/component.php';
 
     class Neubox extends RegistrarModule
     {

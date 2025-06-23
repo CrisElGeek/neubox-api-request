@@ -5,3 +5,4 @@
 *.swp
 ._*
 .*.swp
+debug/debug.log

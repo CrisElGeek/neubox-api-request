@@ -1,6 +1,8 @@
 <?php
 namespace Neubox\API;
 
+require __DIR__ . '/../debug/debug.php';	
+
 class ApiRequest {
 	private $url;
 	private $headers;
@@ -26,6 +28,10 @@ class ApiRequest {
 		if($additionalPostData && is_array($additionalPostData)) {
 			$pd = array_merge($pd, $additionalPostData);
 		}
+		moduleDebug(json_encode([
+			'headers' => $this->headers,
+			'post_data' => $pd
+		]));
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, TRUE);
