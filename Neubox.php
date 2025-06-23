@@ -355,7 +355,7 @@
 
         // Required function
         public function ModifyWhois($params=[],$whois=[]){
-       zc     $domain     = idn_to_ascii($params["domain"],0,INTL_IDNA_VARIANT_UTS46);
+            $domain     = idn_to_ascii($params["domain"],0,INTL_IDNA_VARIANT_UTS46);
 
             $convert_key = [
                 'registrant'        => 'Owner',
