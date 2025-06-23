@@ -76,11 +76,11 @@ require __DIR__ . '/component.php';
         // Use this function if you want a test connection button to appear in the settings (Optional)
 				public function testConnection($config=[]){
 					$apiAuthData = [
-            'API_KEY'  >= $config["settings"]["apikey"],
-            'API_SECRET'   => $config["settings"]["privatekey"],
-            'NEUBOX_USER_EMAIL' => $config["settings"]["neuboxuseremail"],
-            'API_URL'   => $config["settings"]["neuboxuseremail"],
-						'API_USER_AGENT'    => $config["settings"]["neuboxuseremail"]
+            'API_KEY'  						=> $config["settings"]["apikey"],
+            'API_SECRET' 					=> $config["settings"]["privatekey"],
+            'NEUBOX_USER_EMAIL' 	=> $config["settings"]["neuboxuseremail"],
+            'API_URL'   					=> $config["settings"]["apiurl"],
+						'API_USER_AGENT'    	=> $config["settings"]["useragent"]
 					];
 
 					foreach($apiAuthData as $key => $value) {
