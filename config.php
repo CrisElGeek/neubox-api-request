@@ -23,6 +23,8 @@ return [
         'apikey'          => '',
 				'privatekey'          => '',
 				'neuboxuseremail' => '',
+				'apiurl' => '',
+				'useragent' => '',
         'test-mode'         => 0,
         'whidden-amount'    => 0,
         'whidden-currency'  => 4,

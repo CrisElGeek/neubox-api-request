@@ -49,6 +49,20 @@
                     'description'       => "Email address from the Neubox user account",
                     'value'             => $data["neuboxuseremail"] ?? '',
                     'placeholder'       => "user@domain.tld",
+								],
+								'apiurl'          => [
+                    'type'              => "url",
+                    'name'              => "API Host",
+                    'description'       => "Neubox API host",
+                    'value'             => $data["apiurl"] ?? '',
+                    'placeholder'       => "https://api.neubox.org/",
+								],
+								'useragent'          => [
+                    'type'              => "text",
+                    'name'              => "User Agent",
+                    'description'       => "API Request user agent",
+                    'value'             => $data["useragent"] ?? '',
+                    'placeholder'       => "Ejemplo/1.0",
                 ],
                 'test-mode'          => [
                     'type'              => "approval",
@@ -60,23 +74,33 @@
         }
 
         // Use this function if you want a test connection button to appear in the settings (Optional)
-        public function testConnection($config=[]){
-            $apikey   = $config["settings"]["apikey"];
-            $privatekey   = $config["settings"]["privatekey"];
-            $neuboxuseremail    = $config["settings"]["neuboxuseremail"];
+				public function testConnection($config=[]){
+					$apiAuthData = [
+            'API_KEY'  >= $config["settings"]["apikey"],
+            'API_SECRET'   => $config["settings"]["privatekey"],
+            'NEUBOX_USER_EMAIL' => $config["settings"]["neuboxuseremail"],
+            'API_URL'   => $config["settings"]["neuboxuseremail"],
+						'API_USER_AGENT'    => $config["settings"]["neuboxuseremail"]
+					];
 
-            if(!$apikey || !$privatekey || $neuboxuseremail){
-                $this->error = "Please define the API information."; # or $this->lang["error-message-variable"];
-                return false;
+					foreach($apiAuthData as $key => $value) {
+						if(!$value) {
+							$this->error = "Please define the API information."; # or $this->lang["error-message-variable"];
+              return false;
 						}
+					}
 
-						$req = new NeuboxPetitions();
-						try {
-							$req->getDomains();
-						} catch(\Exception $e) {
-							return false;
-						}
-						return true;
+					$req = new NeuboxPetitions($apiAuthData);
+					try {
+						$req->searchDomains([
+							'domain' => 'migarage.mx',
+							'tlds' => ['com']
+						]);
+					} catch(\Exception $e) {
+						$this->error = "An error has occured trying to connect to Neubox API, try again later."; # or $this->lang["error-message-variable"];
+						return false;
+					}
+					return true;
 
         }
 

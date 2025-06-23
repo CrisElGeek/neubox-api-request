@@ -7,7 +7,6 @@ if($_GET['q'] == 'neubox-api-test') {
 	$action = trim(strip_tags($_GET['a']));
 	$actions = ['get-domains', 'search-domains'];
 	if(in_array($action, $actions)) {
-		global $env;
 		$env = parse_ini_file(__DIR__ . '/../.env');
 
 		$postData = json_decode(file_get_contents('php://input'), true);
@@ -16,7 +15,7 @@ if($_GET['q'] == 'neubox-api-test') {
 
 		include __DIR__ . '/../component.php';
 	
-		$req = new NeuboxPetitions();
+		$req = new NeuboxPetitions($env);
 		switch($action) {
 			case 'get-domains':
 				header('Content-Type: application/json');

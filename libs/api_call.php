@@ -5,19 +5,18 @@ class ApiRequest {
 	private $url;
 	private $headers;
 	private $postfields;
-	function __construct() {
-		global $env;
-		$this->url = $env['API_HOST'];
+	function __construct($data = []) {
+		$this->url = $data['API_HOST'];
 		$this->headers = [
 			'Accept: application/json',
 			'Content-Type: application/json',
-			'neubox-api-key: ' . $env['API_KEY'],
-			'neubox-api-secret: ' . $env['API_SECRET'],
-			'User-Agent: ' . $env['API_USER_AGENT'],
-			'neubox-user-email: ' . base64_encode($env['NEUBOX_USER_EMAIL']),
+			'neubox-api-key: ' . $data['API_KEY'],
+			'neubox-api-secret: ' . $sata['API_SECRET'],
+			'User-Agent: ' . $data['API_USER_AGENT'],
+			'neubox-user-email: ' . base64_encode($data['NEUBOX_USER_EMAIL']),
 		];
 		$this->postfields = [
-			'email' => base64_encode($env['NEUBOX_USER_EMAIL'])
+			'email' => base64_encode($data['NEUBOX_USER_EMAIL'])
 		];
 	}
 
