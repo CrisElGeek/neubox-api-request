@@ -3,13 +3,12 @@ use Neubox\Component\NeuboxPetitions;
 
 require __DIR__ . '/component.php';
 
-    class Neubox extends RegistrarModule
-    {
+    class Neubox {
         // Variables and functions previously defined in this class were transferred to the ‘RegistrarModule’ parent.
         // The $this->api variable defined in functions is an imaginary variable.
 
         function __construct(){
-            parent::__construct(__CLASS__);
+            //parent::__construct(__CLASS__);
         }
 
         public function config_fields($data=[]):array
@@ -79,7 +78,7 @@ require __DIR__ . '/component.php';
             'API_KEY'  						=> $config["settings"]["apikey"],
             'API_SECRET' 					=> $config["settings"]["privatekey"],
             'NEUBOX_USER_EMAIL' 	=> $config["settings"]["neuboxuseremail"],
-            'API_URL'   					=> $config["settings"]["apiurl"],
+            'API_HOST'   					=> $config["settings"]["apiurl"],
 						'API_USER_AGENT'    	=> $config["settings"]["useragent"]
 					];
 

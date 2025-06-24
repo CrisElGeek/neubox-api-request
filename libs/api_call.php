@@ -13,7 +13,7 @@ class ApiRequest {
 			'Accept: application/json',
 			'Content-Type: application/json',
 			'neubox-api-key: ' . $data['API_KEY'],
-			'neubox-api-secret: ' . $sata['API_SECRET'],
+			'neubox-api-secret: ' . $data['API_SECRET'],
 			'User-Agent: ' . $data['API_USER_AGENT'],
 			'neubox-user-email: ' . base64_encode($data['NEUBOX_USER_EMAIL']),
 		];
