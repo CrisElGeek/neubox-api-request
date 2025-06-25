@@ -1,5 +1,5 @@
 <?php
     return [
-        'name'              => 'Example Registrar Module',
+        'name'              => 'Neubox',
         'description'       => "Alan adı kayıt kuruluşu hakkında açıklama",
     ];

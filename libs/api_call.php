@@ -43,6 +43,7 @@ class ApiRequest {
 		if (curl_errno($ch)) {
 			$error_msg = curl_error($ch);
 			throw new \Exception($error_msg);
+			moduleDebug($error_msg);
 		}
 		curl_close($ch);
 		moduleDebug($response);

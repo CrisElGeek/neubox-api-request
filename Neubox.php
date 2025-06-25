@@ -3,7 +3,7 @@ use Neubox\Component\NeuboxPetitions;
 
 require __DIR__ . '/component.php';
 
-    class Neubox extends RegistrarModule {
+    class Neubox {
         // Variables and functions previously defined in this class were transferred to the ‘RegistrarModule’ parent.
         // The $this->api variable defined in functions is an imaginary variable.
 

@@ -1,5 +1,5 @@
 <?php 
 return [
-    'name'              => 'Example Registrar Module',
-    'description'       => 'Description about the domain registrar',
+    'name'              => 'Neubox',
+    'description'       => 'Mexican domain registrar',
 ];
