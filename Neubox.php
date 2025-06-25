@@ -8,7 +8,7 @@ require __DIR__ . '/component.php';
         // The $this->api variable defined in functions is an imaginary variable.
 
         function __construct(){
-            //parent::__construct(__CLASS__);
+            parent::__construct(__CLASS__);
         }
 
         public function config_fields($data=[]):array
