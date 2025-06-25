@@ -83,7 +83,7 @@ require __DIR__ . '/component.php';
 					];
 
 					foreach($apiAuthData as $key => $value) {
-						if(!$value) {
+						if(empty($value)) {
 							$this->error = "Please define the API information."; # or $this->lang["error-message-variable"];
               return false;
 						}

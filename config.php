@@ -20,15 +20,15 @@ return [
         // dc-fields : You can use it to obtain some private information from the customer before registering or transferring the domain name.
         'doc-fields' => [],
 
-        'apikey'          => '',
-				'privatekey'          => '',
+        'apikey' 					=> '',
+				'privatekey' 			=> '',
 				'neuboxuseremail' => '',
-				'apiurl' => '',
-				'useragent' => '',
+				'apiurl' 					=> '',
+				'useragent' 			=> '',
         'test-mode'         => 0,
         'whidden-amount'    => 0,
         'whidden-currency'  => 4,
         'adp'               => false,
-        'cost-currency'     => 4,
+        'cost-currency'     => 4
     ],
 ];
