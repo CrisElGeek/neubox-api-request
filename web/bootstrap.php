@@ -11,8 +11,6 @@ if($_GET['q'] == 'neubox-api-test') {
 
 		$postData = json_decode(file_get_contents('php://input'), true);
 
-		require __DIR__ . '/../libs/api_call.php';
-
 		include __DIR__ . '/../component.php';
 	
 		$req = new NeuboxPetitions($env);

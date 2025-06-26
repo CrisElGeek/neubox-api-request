@@ -1,8 +1,6 @@
 <?php
 namespace Neubox\API;
 
-require __DIR__ . '/../debug/debug.php';	
-
 class ApiRequest {
 	private $url;
 	private $headers;

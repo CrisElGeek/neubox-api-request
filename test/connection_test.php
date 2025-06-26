@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/../web/config.php';
 $env = parse_ini_file(__DIR__ . '/../.env');
 require __DIR__ . '/../Neubox.php';
 

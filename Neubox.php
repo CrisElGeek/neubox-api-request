@@ -107,31 +107,52 @@ require __DIR__ . '/component.php';
 
         // Use this method if domain availability checking is supported. (Optional)
 
-        public function questioning($sld=NULL,$tlds=[]){
-            $sld = idn_to_ascii($sld,0,INTL_IDNA_VARIANT_UTS46);
+				public function questioning($sld=NULL,$tlds=[]){
+					
+					$apiAuthData = [
+            'API_KEY'  						=> $this->config["settings"]["apikey"],
+            'API_SECRET' 					=> $this->config["settings"]["privatekey"],
+            'NEUBOX_USER_EMAIL' 	=> $this->config["settings"]["neuboxuseremail"],
+            'API_HOST'   					=> $this->config["settings"]["apiurl"],
+						'API_USER_AGENT'    	=> $this->config["settings"]["useragent"]
+					];
+					
+					$sld = idn_to_ascii($sld,0,INTL_IDNA_VARIANT_UTS46);
 
-            if(!is_array($tlds)) $tlds = [$tlds];
+					if(!is_array($tlds)) $tlds = [$tlds];
 
-            $result         = [];
+					$result = [];
 
-            // $tlds example array output : ['com','net','org']
+					// $tlds example array output : ['com','net','org']
 
-            $result['com'] = [
-                'status'        => "unavailable",
-            ];
+					/*--
+					$result['com'] = [
+							'status'        => "unavailable",
+					];
 
-            $result['net'] = [
-                'status'        => "available",
-            ];
+					$result['net'] = [
+							'status'        => "available",
+					];
 
-            $result['org'] = [
-                'status'        => "unavailable",
-                'premium'       => true,
-                'premium_price' => [
-                    'amount' => 12345.6789,
-                    'currency' => 'USD',
-                ]
-            ];
+					$result['org'] = [
+							'status'        => "unavailable",
+							'premium'       => true,
+							'premium_price' => [
+									'amount' => 12345.6789,
+									'currency' => 'USD',
+							]
+					];
+					--*/
+					$req = new NeuboxPetitions($apiAuthData);
+					try {
+						$res = $req->searchDomains([
+							'domain' => $sld,
+							'tlds' => $tlds
+						]);
+					} catch(\Exception $e) {
+						$this->error = "An error has occured trying to find your domain, try again later."; # or $this->lang["error-message-variable"];
+						return false;
+					}
 
             return $result;
         }
