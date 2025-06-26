@@ -120,33 +120,15 @@ require __DIR__ . '/component.php';
 					$sld = idn_to_ascii($sld,0,INTL_IDNA_VARIANT_UTS46);
 
 					if(!is_array($tlds)) $tlds = [$tlds];
+					
+					$main_tld = $tlds[0];
 
 					$result = [];
 
-					// $tlds example array output : ['com','net','org']
-
-					/*--
-					$result['com'] = [
-							'status'        => "unavailable",
-					];
-
-					$result['net'] = [
-							'status'        => "available",
-					];
-
-					$result['org'] = [
-							'status'        => "unavailable",
-							'premium'       => true,
-							'premium_price' => [
-									'amount' => 12345.6789,
-									'currency' => 'USD',
-							]
-					];
-					--*/
 					$req = new NeuboxPetitions($apiAuthData);
 					try {
 						$res = $req->searchDomains([
-							'domain' => $sld,
+							'domain' => $sld . '.' . $main_tld,
 							'tlds' => $tlds
 						]);
 					} catch(\Exception $e) {
