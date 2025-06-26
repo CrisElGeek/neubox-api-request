@@ -33,10 +33,10 @@ class NeuboxPetitions {
 					]
 				];
 			}
+			return $result;
 		} else {
 			throw new \Exception('Missing data', 400);
 		}
-		return json_encode($result);
 	}
 }
 ?>
