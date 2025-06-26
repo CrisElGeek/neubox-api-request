@@ -127,7 +127,7 @@ require __DIR__ . '/component.php';
 
 					$req = new NeuboxPetitions($apiAuthData);
 					try {
-						$res = $req->searchDomains([
+						$result = $req->searchDomains([
 							'domain' => $sld . '.' . $main_tld,
 							'tlds' => $tlds
 						]);
