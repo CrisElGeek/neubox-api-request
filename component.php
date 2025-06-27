@@ -39,5 +39,16 @@ class NeuboxPetitions {
 			throw new \Exception('Missing data', 400);
 		}
 	}
+
+	public function registerDomains(Array $postData) {
+		if($postData['domains'] && is_array($postData['domains']) && count($postData['domains']) > 0 && $postData['regperiod'] && is_array($postData['regperiod']) && count($postData['regperiod']) > 0) {
+			$response_json = $this->req->Call('registerdomain', $postData);
+			//$response = json_decode($response_json);
+			return $response_json;
+		} else {
+			throw new \Exception('Missing data', 400);
+		}
+
+	}
 }
 ?>
