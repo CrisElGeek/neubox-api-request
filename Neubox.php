@@ -73,7 +73,7 @@ require __DIR__ . '/component.php';
         }
 
         // Use this function if you want a test connection button to appear in the settings (Optional)
-				public function testConnection($config=[]){
+				public function testConnection($config=[]) {
 					$apiAuthData = [
             'API_KEY'  						=> $config["settings"]["apikey"],
             'API_SECRET' 					=> $config["settings"]["privatekey"],
@@ -102,13 +102,11 @@ require __DIR__ . '/component.php';
 					return [
 						'message' => 'connection test succeded!'
 					];
-
         }
 
         // Use this method if domain availability checking is supported. (Optional)
 
-				public function questioning($sld=NULL,$tlds=[]){
-					
+				public function questioning($sld=NULL,$tlds=[]) {				
 					$apiAuthData = [
             'API_KEY'  						=> $this->config["settings"]["apikey"],
             'API_SECRET' 					=> $this->config["settings"]["privatekey"],
@@ -140,117 +138,125 @@ require __DIR__ . '/component.php';
         }
 
         // Required function
-        public function register($domain='',$sld='',$tld='',$year=1,$dns=[],$whois=[],$wprivacy=false,$eppCode=''){
-            $domain             = idn_to_ascii($domain,0,INTL_IDNA_VARIANT_UTS46);
-            $sld                = idn_to_ascii($sld,0,INTL_IDNA_VARIANT_UTS46);
+				public function register($domain='',$sld='',$tld='',$year=1,$dns=[],$whois=[],$wprivacy=false,$eppCode=''){
+					
+					$apiAuthData = [
+            'API_KEY'  						=> $this->config["settings"]["apikey"],
+            'API_SECRET' 					=> $this->config["settings"]["privatekey"],
+            'NEUBOX_USER_EMAIL' 	=> $this->config["settings"]["neuboxuseremail"],
+            'API_HOST'   					=> $this->config["settings"]["apiurl"],
+						'API_USER_AGENT'    	=> $this->config["settings"]["useragent"]
+					];
+					
+					$domain             = idn_to_ascii($domain,0,INTL_IDNA_VARIANT_UTS46);
+          $sld                = idn_to_ascii($sld,0,INTL_IDNA_VARIANT_UTS46);
 
 
-            $api_params         = [
-                'Domain'        => $domain,
-                'Year'          => $year,
-            ];
+					$api_params         = [
+							'Domain'        => $domain,
+							'Year'          => $year,
+					];
 
-            if($eppCode) $api_params['EppCode'] = $eppCode;
+					if($eppCode) $api_params['EppCode'] = $eppCode;
 
-            // If the tld contains a document, we process it.
-            $require_docs       = $this->config["settings"]["doc-fields"][$tld] ?? [];
-            if($require_docs)
-            {
-                // If there is a document defined in the tld and the user has not sent a document, we give a warning.
-                if(!$this->docs)
-                {
-                    $this->error = "Required documents for domain name not defined";
-                    return false;
-                }
+					// If the tld contains a document, we process it.
+					$require_docs       = $this->config["settings"]["doc-fields"][$tld] ?? [];
+					if($require_docs)
+					{
+							// If there is a document defined in the tld and the user has not sent a document, we give a warning.
+							if(!$this->docs)
+							{
+									$this->error = "Required documents for domain name not defined";
+									return false;
+							}
 
-                // We prepare the obtained document entries to be sent to the domain name provider.
-                foreach($require_docs AS $doc_id => $doc)
-                {
-                    if(($doc["required"] ?? false) && (!isset($this->docs[$doc_id]) || strlen($this->docs[$doc_id]) < 1))
-                    {
-                        $this->error = 'The document "'.self::get_doc_lang($doc["name"]).'" is not specified!';
-                        return false;
-                    }
+							// We prepare the obtained document entries to be sent to the domain name provider.
+							foreach($require_docs AS $doc_id => $doc)
+							{
+									if(($doc["required"] ?? false) && (!isset($this->docs[$doc_id]) || strlen($this->docs[$doc_id]) < 1))
+									{
+											$this->error = 'The document "'.self::get_doc_lang($doc["name"]).'" is not specified!';
+											return false;
+									}
 
-                    $doc_value = $this->docs[$doc_id];
+									$doc_value = $this->docs[$doc_id];
 
-                    if($doc["type"] == "file") $doc_value = base64_encode(file_get_contents($doc_value));
+									if($doc["type"] == "file") $doc_value = base64_encode(file_get_contents($doc_value));
 
-                    $api_params['RequireInformation'][$doc_id] = $doc_value;
-                }
-            }
-
-
-            $convert_key = [
-                'registrant'        => 'Owner',
-                'administrative'    => 'Admin',
-                'technical'         => 'Tech',
-                'billing'           => 'Bill',
-            ];
-            $contact_types          = array_keys($convert_key);
-
-            foreach($contact_types AS $w_ct)
-            {
-                $ct = $convert_key[$w_ct];
-
-                $api_params["Contacts"][$ct] = [
-                    'name'              => $whois[$w_ct]["FirstName"] ?? '',
-                    'surname'           => $whois[$w_ct]["LastName"] ?? '',
-                    'fullname'          => $whois[$w_ct]["Name"] ?? '',
-                    'company'           => $whois[$w_ct]["Company"] ?? '',
-                    'emailaddr'         => $whois[$w_ct]["EMail"] ?? '',
-                    'address1'          => $whois[$w_ct]["AddressLine1"] ?? '',
-                    'address2'          => $whois[$w_ct]["AddressLine2"] ?? '',
-                    'city'              => $whois[$w_ct]["City"] ?? '',
-                    'state'             => $whois[$w_ct]["State"] ?? '',
-                    'zip'               => $whois[$w_ct]["ZipCode"] ?? '',
-                    'country'           => $whois[$w_ct]["Country"] ?? '',
-                    'telnocc'           => $whois[$w_ct]["PhoneCountryCode"] ?? '',
-                    'telno'             => $whois[$w_ct]["Phone"] ?? '',
-                    'faxnocc'           => $whois[$w_ct]["FaxCountryCode"] ?? '',
-                    'faxno'             => $whois[$w_ct]["Fax"] ?? '',
-                ];
-            }
-
-            $api_params["Dns"] =  array_values($dns); // ['ns1.example.com','ns2.example.com'] etc..
-
-            // Whois Privacy Protection Enable
-            if($wprivacy) $api_params["PrivacyProtection"] = 'enable';
+									$api_params['RequireInformation'][$doc_id] = $doc_value;
+							}
+					}
 
 
-            // This result should return if the domain name was registered successfully or was previously registered.
+					$convert_key = [
+							'registrant'        => 'Owner',
+							'administrative'    => 'Admin',
+							'technical'         => 'Tech',
+							'billing'           => 'Bill',
+					];
+					$contact_types          = array_keys($convert_key);
 
-            #$response       = $this->api->register_domain($api_params);
-            $response        = [
-                'status' => "error",
-                'message' => "test error message",
-                'entity_id' => 0,
-                'PrivacyProtection' => [
-                    'status' => "active",
-                ],
-            ];
+					foreach($contact_types AS $w_ct)
+					{
+							$ct = $convert_key[$w_ct];
 
-            if($response && $response['status'] == 'successful')
-            {
+							$api_params["Contacts"][$ct] = [
+									'name'              => $whois[$w_ct]["FirstName"] ?? '',
+									'surname'           => $whois[$w_ct]["LastName"] ?? '',
+									'fullname'          => $whois[$w_ct]["Name"] ?? '',
+									'company'           => $whois[$w_ct]["Company"] ?? '',
+									'emailaddr'         => $whois[$w_ct]["EMail"] ?? '',
+									'address1'          => $whois[$w_ct]["AddressLine1"] ?? '',
+									'address2'          => $whois[$w_ct]["AddressLine2"] ?? '',
+									'city'              => $whois[$w_ct]["City"] ?? '',
+									'state'             => $whois[$w_ct]["State"] ?? '',
+									'zip'               => $whois[$w_ct]["ZipCode"] ?? '',
+									'country'           => $whois[$w_ct]["Country"] ?? '',
+									'telnocc'           => $whois[$w_ct]["PhoneCountryCode"] ?? '',
+									'telno'             => $whois[$w_ct]["Phone"] ?? '',
+									'faxnocc'           => $whois[$w_ct]["FaxCountryCode"] ?? '',
+									'faxno'             => $whois[$w_ct]["Fax"] ?? '',
+							];
+					}
 
-                $returnData = [
-                    'status' => "SUCCESS",
-                    'config' => [
-                        'entityID' => $response['entity_id'],
-                    ],
-                ];
+					$api_params["Dns"] =  array_values($dns); // ['ns1.example.com','ns2.example.com'] etc..
 
-                if($wprivacy)
-                    $returnData["whois_privacy"] = ['status' => $response['PrivacyProtection']['status'] == 'active','message' => NULL];
+					// Whois Privacy Protection Enable
+					if($wprivacy) $api_params["PrivacyProtection"] = 'enable';
+					
+					$result = [];
 
-                return $returnData;
-            }
-            else
-            {
-                $this->error = $response['message'];
-                return false;
-            }
-        }
+					$req = new NeuboxPetitions($apiAuthData);
+					try {
+						$result = $req->searchDomains([
+							'domain' => ["{$sld}.{$tld}"],
+							'regperiod' => [$year]
+						]);
+					} catch(\Exception $e) {
+						$this->error = "An error has occured trying to register your domain, try again later."; 
+						return false;
+					}
+
+
+					if($result && $result->response->result == 'success') {
+
+							$returnData = [
+									'status' => "SUCCESS",
+									'config' => [
+											'entityID' => $result->response->invoiceid,
+									],
+							];
+
+							if($wprivacy)
+									$returnData["whois_privacy"] = ['status' => $response['PrivacyProtection']['status'] == 'active','message' => NULL];
+
+							return $returnData;
+					}
+					else {
+							$this->error = $result->response->message;
+							return false;
+					}
+			}
 
         // Required function
         public function transfer($domain='',$sld='',$tld='',$year=1,$dns=[],$whois=[],$wprivacy=false,$eppCode=''){

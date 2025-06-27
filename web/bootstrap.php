@@ -5,7 +5,7 @@ require __DIR__ . '/config.php';
 
 if($_GET['q'] == 'neubox-api-test') {
 	$action = trim(strip_tags($_GET['a']));
-	$actions = ['get-domains', 'search-domains'];
+	$actions = ['get-domains', 'search-domains', 'register-domains'];
 	if(in_array($action, $actions)) {
 		$env = parse_ini_file(__DIR__ . '/../.env');
 
@@ -31,6 +31,18 @@ if($_GET['q'] == 'neubox-api-test') {
 				header('Content-Type: application/json');
 				try {
 					$response = $req->searchDomains($postData);
+				} catch(\Exception $e) {
+					http_response_code($e->getCode());
+					echo json_encode([
+						'message' => $e->getMessage()
+					]);
+				}
+				echo json_encode($response);
+				break;
+			case 'register-domains':
+				header('Content-Type: application/json');
+				try {
+					$response = $req->registerDomains($postData);
 				} catch(\Exception $e) {
 					http_response_code($e->getCode());
 					echo json_encode([
