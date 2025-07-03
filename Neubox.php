@@ -708,11 +708,11 @@ class Neubox {
 			Helper::Load(["User"]);
 			
 			$apiAuthData = [
-				'API_KEY'  						=> $config["settings"]["apikey"],
-				'API_SECRET' 					=> $config["settings"]["privatekey"],
-				'NEUBOX_USER_EMAIL' 	=> $config["settings"]["neuboxuseremail"],
-				'API_HOST'   					=> $config["settings"]["apiurl"],
-				'API_USER_AGENT'    	=> $config["settings"]["useragent"]
+				'API_KEY'  						=> $this->config["settings"]["apikey"],
+				'API_SECRET' 					=> $this->config["settings"]["privatekey"],
+				'NEUBOX_USER_EMAIL' 	=> $this->config["settings"]["neuboxuseremail"],
+				'API_HOST'   					=> $this->config["settings"]["apiurl"],
+				'API_USER_AGENT'    	=> $this->config["settings"]["useragent"]
 			];
 			
 			foreach($apiAuthData as $key => $value) {
@@ -721,35 +721,6 @@ class Neubox {
 					return false;
 				}
 			}
-
-				// You should adapt the response from your API here.
-				$data = [
-						[
-								"creation_date"     => "2024-05-01",
-								"expiry_date"       => "2025-05-01",
-								"domain"            => "example1.com",
-						],
-						[
-								"creation_date"     => "2023-08-15",
-								"expiry_date"       => "2024-08-15",
-								"domain"            => "example2.net",
-						],
-						[
-								"creation_date"     => "2022-11-20",
-								"expiry_date"       => "2023-11-20",
-								"domain"            => "example3.org",
-						],
-						[
-								"creation_date"     => "2024-02-10",
-								"expiry_date"       => "2025-02-10",
-								"domain"            => "example4.co",
-						],
-						[
-								"creation_date"     => "2021-07-05",
-								"expiry_date"       => "2022-07-05",
-								"domain"            => "example5.io",
-						],
-				];
 
 			$req = new NeuboxPetitions($apiAuthData);
 			try {
